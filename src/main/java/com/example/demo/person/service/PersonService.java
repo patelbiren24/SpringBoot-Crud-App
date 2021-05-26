@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.function.Supplier;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -53,9 +56,13 @@ public class PersonService {
 		return this.personRepos.save(findPerson);
 	}
 	
-	
-	
-	
-
-
+	@DeleteMapping("/{id}")
+	ResponseEntity<String> deletePerson (@PathVariable (value = "id")long userId){
+		Persons personToDelete = this.personRepos.findById(userId).get();
+		
+		this.personRepos.delete(personToDelete);
+		return ResponseEntity.ok().body("Person has been deleted");
+		
+		
+	}
 }
